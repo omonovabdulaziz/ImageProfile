@@ -3,7 +3,6 @@ from telethon.tl import functions
 from datetime import datetime, timedelta
 import time
 from PIL import Image, ImageDraw, ImageFont
-import io
 import pytz
 
 # Replace these values with your own API ID, API hash, and phone number
