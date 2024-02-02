@@ -36,7 +36,7 @@ async def update_profile_photo():
             font = ImageFont.load_default()
 
             # Get the size of the text
-            text = f'Current Time: {current_time_str}'
+            text = f'Hozirgi Vaqt : {current_time_str}'
             text_width, text_height = draw.textsize(text, font=font)
 
             # Center the text
