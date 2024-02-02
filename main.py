@@ -1,7 +1,9 @@
 from telethon.sync import TelegramClient
-from telethon.tl import functions
+from telethon.tl import functions, types
 from datetime import datetime
 import time
+from PIL import Image, ImageDraw, ImageFont
+import io
 import pytz
 
 # Replace these values with your own API ID, API hash, and phone number
@@ -13,22 +15,40 @@ phone_number = '+998950960153'
 client = TelegramClient('session_name', api_id, api_hash)
 
 
-async def update_name_status():
+async def update_profile_photo():
     while True:
         try:
             # Get the current time in Uzbekistan (Tashkent time)
             tz_uzbekistan = pytz.timezone('Asia/Tashkent')
             current_time = datetime.now(tz_uzbekistan).strftime("%H:%M")
 
-            # Update your Telegram name with the current time
-            await client(functions.account.UpdateProfileRequest(
-                first_name=f'A. {current_time}'
+            # Create an image with the current time
+            img = Image.new('RGB', (400, 200), color='white')
+            d = ImageDraw.Draw(img)
+
+            # Choose a smaller font size and center the text
+            font_size = 20
+            font = ImageFont.truetype("arial.ttf", font_size)  # You may need to adjust the font path
+
+            text_width, text_height = d.textsize(f'Hozirgi Vaqt: {current_time}', font=font)
+            text_x = (img.width - text_width) // 2
+            text_y = (img.height - text_height) // 2
+
+            d.text((text_x, text_y), f'Current Time: {current_time}', font=font, fill='black')
+
+            # Save the image locally
+            img_path = 'profile_photo.png'
+            img.save(img_path, format='PNG')  # Save as PNG to preserve transparency
+
+            # Delete existing profile photos
+            await client(functions.photos.DeletePhotosRequest(await client.get_profile_photos('me')))
+
+            # Upload the new image as your profile photo
+            result = await client(functions.photos.UploadProfilePhotoRequest(
+                file=await client.upload_file(img_path)
             ))
 
-            # Set your Telegram status to online
-            await client(functions.account.UpdateStatusRequest(
-                offline=False
-            ))
+            print(result)  # Print the result for debugging purposes
 
             # Sleep for a short duration (adjust as needed)
             time.sleep(60)
@@ -39,6 +59,6 @@ async def update_name_status():
 # Start the client
 client.start()
 
-# Run the update_name_status function in an event loop
+# Run the update_profile_photo function in an event loop
 with client:
-    client.loop.run_until_complete(update_name_status())
+    client.loop.run_until_complete(update_profile_photo())
