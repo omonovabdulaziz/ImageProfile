@@ -21,13 +21,9 @@ async def update_profile_photo():
             tz_uzbekistan = pytz.timezone('Asia/Tashkent')
             current_time = datetime.now(tz_uzbekistan)
 
-            # Increase the current time by 1 minute
-            current_time += timedelta(minutes=1)
-
             # Format the time to HH:MM
             current_time_str = current_time.strftime("%H:%M")
 
-            # Create an image with the current time
             img = Image.new('RGB', (400, 200), color='white')
             draw = ImageDraw.Draw(img)
 
