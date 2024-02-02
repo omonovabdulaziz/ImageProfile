@@ -1,5 +1,5 @@
 from telethon.sync import TelegramClient
-from telethon.tl import functions, types
+from telethon.tl import functions
 from datetime import datetime
 import time
 from PIL import Image, ImageDraw, ImageFont
@@ -28,9 +28,10 @@ async def update_profile_photo():
 
             # Choose a smaller font size and center the text
             font_size = 20
-            font = ImageFont.truetype("arial.ttf", font_size)  # You may need to adjust the font path
+            font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+            font = ImageFont.truetype(font_path, font_size)
 
-            text_width, text_height = d.textsize(f'Hozirgi Vaqt: {current_time}', font=font)
+            text_width, text_height = d.textsize(f'Current Time: {current_time}', font=font)
             text_x = (img.width - text_width) // 2
             text_y = (img.height - text_height) // 2
 
