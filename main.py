@@ -1,6 +1,6 @@
 from telethon.sync import TelegramClient
 from telethon.tl import functions
-from datetime import datetime
+from datetime import datetime, timedelta
 import time
 from PIL import Image, ImageDraw, ImageFont
 import io
@@ -20,22 +20,31 @@ async def update_profile_photo():
         try:
             # Get the current time in Uzbekistan (Tashkent time)
             tz_uzbekistan = pytz.timezone('Asia/Tashkent')
-            current_time = datetime.now(tz_uzbekistan).strftime("%H:%M")
+            current_time = datetime.now(tz_uzbekistan)
+
+            # Increase the current time by 1 minute
+            current_time += timedelta(minutes=1)
+
+            # Format the time to HH:MM
+            current_time_str = current_time.strftime("%H:%M")
 
             # Create an image with the current time
             img = Image.new('RGB', (400, 200), color='white')
-            d = ImageDraw.Draw(img)
+            draw = ImageDraw.Draw(img)
 
-            # Choose a smaller font size and center the text
+            # Choose a default font size
             font_size = 20
-            font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
-            font = ImageFont.truetype(font_path, font_size)
+            font = ImageFont.load_default()
 
-            text_width, text_height = d.textsize(f'Current Time: {current_time}', font=font)
+            # Get the size of the text
+            text = f'Current Time: {current_time_str}'
+            text_width, text_height = draw.textsize(text, font=font)
+
+            # Center the text
             text_x = (img.width - text_width) // 2
             text_y = (img.height - text_height) // 2
 
-            d.text((text_x, text_y), f'Current Time: {current_time}', font=font, fill='black')
+            draw.text((text_x, text_y), text, font=font, fill='black')
 
             # Save the image locally
             img_path = 'profile_photo.png'
@@ -62,4 +71,7 @@ client.start()
 
 # Run the update_profile_photo function in an event loop
 with client:
-    client.loop.run_until_complete(update_profile_photo())
+    try:
+        client.loop.run_until_complete(update_profile_photo())
+    except KeyboardInterrupt:
+        print("Program terminated by user.")
