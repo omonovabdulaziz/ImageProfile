@@ -2,6 +2,7 @@ from telethon.sync import TelegramClient
 from telethon.tl import functions
 from datetime import datetime
 import time
+import pytz
 
 # Replace these values with your own API ID, API hash, and phone number
 api_id = '26311979'
@@ -15,7 +16,9 @@ client = TelegramClient('session_name', api_id, api_hash)
 async def update_name_status():
     while True:
         try:
-            current_time = datetime.now().strftime("%H:%M")
+            # Get the current time in Uzbekistan (Tashkent time)
+            tz_uzbekistan = pytz.timezone('Asia/Tashkent')
+            current_time = datetime.now(tz_uzbekistan).strftime("%H:%M")
 
             # Update your Telegram name with the current time
             await client(functions.account.UpdateProfileRequest(
