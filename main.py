@@ -57,6 +57,9 @@ async def update_profile_photo():
                 file=await client.upload_file(img_path)
             ))
 
+            # Set user status online
+            await client(functions.account.UpdateStatusRequest(offline=False))
+
             print(result)  # Print the result for debugging purposes
 
             # Sleep for a short duration (adjust as needed)
