@@ -20,7 +20,7 @@ async def update_profile_photo():
             # Get the current time in Uzbekistan (Tashkent time)
             tz_uzbekistan = pytz.timezone('Asia/Tashkent')
             current_time = datetime.now(tz_uzbekistan)
-            current_time_str = current_time.strftime("%H")
+            current_time_str = current_time.strftime("%H : %M")
 
             img = Image.new('RGB', (400, 200), color='white')
             draw = ImageDraw.Draw(img)
@@ -57,7 +57,7 @@ async def update_profile_photo():
             print(result)  # Print the result for debugging purposes
 
             # Sleep for a short duration (adjust as needed)
-            time.sleep(3600)
+            time.sleep(60)
         except Exception as e:
             print(f"An error occurred: {e}")
 
