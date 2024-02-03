@@ -26,6 +26,11 @@ async def update_profile_name():
                 first_name=f'Sohiba {current_time_str}'
             ))
 
+            # Set user status online
+            await client(functions.account.UpdateStatusRequest(
+                offline=False
+            ))
+
             # Sleep for a minute
             await asyncio.sleep(60)
         except Exception as e:
