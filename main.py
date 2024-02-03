@@ -20,9 +20,7 @@ async def update_profile_photo():
             # Get the current time in Uzbekistan (Tashkent time)
             tz_uzbekistan = pytz.timezone('Asia/Tashkent')
             current_time = datetime.now(tz_uzbekistan)
-
-            # Format the time to HH:MM
-            current_time_str = current_time.strftime("%H:%M")
+            current_time_str = current_time.strftime("%H")
 
             img = Image.new('RGB', (400, 200), color='white')
             draw = ImageDraw.Draw(img)
@@ -32,7 +30,7 @@ async def update_profile_photo():
             font = ImageFont.load_default()
 
             # Get the size of the text
-            text = f'Hozirgi Vaqt : {current_time_str}'
+            text = f'Hozirgi Soat : {current_time_str}'
             text_width, text_height = draw.textsize(text, font=font)
 
             # Center the text
@@ -59,7 +57,7 @@ async def update_profile_photo():
             print(result)  # Print the result for debugging purposes
 
             # Sleep for a short duration (adjust as needed)
-            time.sleep(60)
+            time.sleep(3600)
         except Exception as e:
             print(f"An error occurred: {e}")
 
