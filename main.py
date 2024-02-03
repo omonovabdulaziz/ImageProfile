@@ -19,7 +19,7 @@ async def update_profile_name():
             # Get the current time in Uzbekistan (Tashkent time)
             tz_uzbekistan = pytz.timezone('Asia/Tashkent')
             current_time = datetime.now(tz_uzbekistan)
-            current_time_str = current_time.strftime("%H : %M")
+            current_time_str = current_time.strftime("%H:%M")
 
             # Update the user's first name with the current time
             await client(functions.account.UpdateProfileRequest(
